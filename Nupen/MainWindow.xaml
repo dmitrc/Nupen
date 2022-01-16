@@ -1,0 +1,16 @@
+﻿<Window x:Class="Nupen.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        AllowsTransparency="True"
+        Topmost="True"
+        WindowStyle="None"
+        WindowState="Normal"
+        ShowInTaskbar="False"
+        Background="Transparent"
+        Loaded="OnLoaded">
+
+    <!--<InkCanvas Name="inkCanvas" Background="{x:Null}" />-->
+
+    <Grid Background="#66000000" />
+
+</Window>
