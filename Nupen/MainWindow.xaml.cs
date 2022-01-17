@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace Nupen
 {
@@ -30,10 +31,12 @@ namespace Nupen
                 if (value)
                 {
                     SetWindowLongPtr(_hwnd, GWL_EXSTYLE, _extendedStyle | WS_EX_TRANSPARENT);
+                    Background = null;
                 }
                 else
                 {
                     SetWindowLongPtr(_hwnd, GWL_EXSTYLE, _extendedStyle);
+                    Background = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0));
                 }
             }
         }
@@ -59,6 +62,9 @@ namespace Nupen
             Top = 0;
             Width = SystemParameters.VirtualScreenWidth;
             Height = SystemParameters.VirtualScreenHeight;
+
+            var toolsWindow = new ToolsWindow();
+            toolsWindow.Show();
         }
     }
 }

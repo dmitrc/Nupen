@@ -6,11 +6,10 @@
         WindowStyle="None"
         WindowState="Normal"
         ShowInTaskbar="False"
-        Background="Transparent"
         Loaded="OnLoaded">
 
     <!--<InkCanvas Name="inkCanvas" Background="{x:Null}" />-->
 
-    <Grid Background="#66000000" />
+    <Grid Background="#44000000" />
 
 </Window>
