@@ -1,22 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Nupen
 {
-    /// <summary>
-    /// Interaction logic for ToolsWindow.xaml
-    /// </summary>
     public partial class ToolsWindow : Window
     {
         public ToolsWindow()
@@ -30,6 +16,51 @@ namespace Nupen
             {
                 DragMove();
             }
+        }
+
+        private void OnNoneButtonClick(object sender, RoutedEventArgs e)
+        {
+            (Owner as MainWindow)?.SetDrawingMode(DrawingMode.NONE);
+        }
+
+        private void OnPenButtonClick(object sender, RoutedEventArgs e)
+        {
+            (Owner as MainWindow)?.SetDrawingMode(DrawingMode.PEN);
+        }
+
+        private void OnArrowButtonClick(object sender, RoutedEventArgs e)
+        {
+            (Owner as MainWindow)?.SetDrawingMode(DrawingMode.ARROW);
+        }
+
+        private void OnRectButtonClick(object sender, RoutedEventArgs e)
+        {
+            (Owner as MainWindow)?.SetDrawingMode(DrawingMode.RECT);
+        }
+
+        private void OnCircleButtonClick(object sender, RoutedEventArgs e)
+        {
+            (Owner as MainWindow)?.SetDrawingMode(DrawingMode.CIRCLE);
+        }
+
+        private void OnEraserButtonClick(object sender, RoutedEventArgs e)
+        {
+            (Owner as MainWindow)?.SetDrawingMode(DrawingMode.ERASE);
+        }
+
+        private void OnHighlighterButtonClick(object sender, RoutedEventArgs e)
+        {
+            (Owner as MainWindow)?.SetDrawingMode(DrawingMode.HIGHLIGHT);
+        }
+
+        private void OnEraseAllButtonClick(object sender, RoutedEventArgs e)
+        {
+            (Owner as MainWindow)?.Clear();
+        }
+
+        private void OnExitButtonClick(object sender, RoutedEventArgs e)
+        {
+            Owner.Close();
         }
     }
 }

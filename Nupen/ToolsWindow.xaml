@@ -2,11 +2,42 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Height="240" 
-        Width="80"
+        Width="60"
         WindowStyle="None"
         Topmost="True"
-        ResizeMode="NoResize">
+        AllowsTransparency="True"
+        Background="{x:Null}"
+        ResizeMode="NoResize"
+        WindowState="Normal"
+        ShowInTaskbar="False"
+        Opacity="0.8">
 
-    <Grid Background="White" MouseLeftButtonDown="OnMouseLeftButtonDown" />
+    <Grid Background="White" MouseLeftButtonDown="OnMouseLeftButtonDown">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" Click="OnNoneButtonClick">Cursor</Button>
+        <Button Grid.Row="1" Click="OnPenButtonClick">Pen</Button>
+        <Button Grid.Row="2" Click="OnHighlighterButtonClick">Highlight</Button>
+        <Button Grid.Row="3" Click="OnArrowButtonClick">Arrow</Button>
+        <Button Grid.Row="4" Click="OnRectButtonClick">Rectangle</Button>
+        <Button Grid.Row="5" Click="OnCircleButtonClick">Circle</Button>
+        <Button Grid.Row="6" Click="OnEraserButtonClick">Erase</Button>
+        <Button Grid.Row="7" Click="OnEraseAllButtonClick">Erase all</Button>
+
+        <Button Grid.Row="9" Click="OnExitButtonClick">Exit</Button>
+
+    </Grid>
 
 </Window>

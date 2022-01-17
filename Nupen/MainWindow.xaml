@@ -8,8 +8,10 @@
         ShowInTaskbar="False"
         Loaded="OnLoaded">
 
-    <!--<InkCanvas Name="inkCanvas" Background="{x:Null}" />-->
-
-    <Grid Background="#44000000" />
+    <InkCanvas 
+        Name="inkCanvas" 
+        Background="{x:Null}"
+        EditingMode="None"
+        StrokeCollected="OnStrokeCollected" />
 
 </Window>
