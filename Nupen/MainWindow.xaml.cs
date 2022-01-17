@@ -9,7 +9,8 @@ using System.Windows.Media;
 
 namespace Nupen
 {
-    public enum DrawingMode { NONE, PEN, HIGHLIGHT, ARROW, RECT, CIRCLE, ERASE };
+    public enum DrawingMode { NONE, PEN, HIGHLIGHT, ARROW, RECT, ERASE };
+    public enum BrushSize { S = 2, M = 3, L = 5, XL = 10 };
 
     public partial class MainWindow : Window
     {
@@ -19,8 +20,9 @@ namespace Nupen
         private IntPtr _hwnd;
         private int _extendedStyle;
 
+        private ToolsWindow? _toolsWindow;
         private DrawingMode _mode = DrawingMode.NONE;
-        private int _brushSize = 3;
+        private BrushSize _brushSize = BrushSize.S;
         private Color _brushColor = Color.FromRgb(255, 0, 0);
 
         [DllImport("user32.dll")]
@@ -62,7 +64,12 @@ namespace Nupen
             _hwnd = new WindowInteropHelper(this).Handle;
             _extendedStyle = GetWindowLongPtr(_hwnd, GWL_EXSTYLE);
 
-            SetDrawingMode(DrawingMode.NONE);
+            _toolsWindow = new ToolsWindow();
+            _toolsWindow.Owner = this;
+
+            SetDrawingMode(_mode);
+            SetSize(_brushSize);
+            SetColor(_brushColor);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -72,9 +79,15 @@ namespace Nupen
             Width = SystemParameters.VirtualScreenWidth;
             Height = SystemParameters.VirtualScreenHeight;
 
-            var toolsWindow = new ToolsWindow();
-            toolsWindow.Owner = this;
-            toolsWindow.Show();
+            _toolsWindow?.Show();
+        }
+
+        public void Reset()
+        {
+            if (_mode != DrawingMode.NONE)
+            {
+                SetDrawingMode(DrawingMode.NONE);
+            }
         }
 
         public void Clear()
@@ -85,17 +98,48 @@ namespace Nupen
         public void SetDrawingMode(DrawingMode mode)
         {
             _mode = mode;
-
             CanClickThrough = mode == DrawingMode.NONE;
 
-            inkCanvas.Cursor = mode == DrawingMode.ERASE ? Cursors.Cross : Cursors.Pen;
             inkCanvas.EditingMode = mode == DrawingMode.ERASE ? InkCanvasEditingMode.EraseByStroke : InkCanvasEditingMode.Ink;
+
             inkCanvas.DefaultDrawingAttributes.IsHighlighter = mode == DrawingMode.HIGHLIGHT;
             inkCanvas.DefaultDrawingAttributes.FitToCurve = true;
-
-            inkCanvas.DefaultDrawingAttributes.Width = mode == DrawingMode.ERASE ? _brushSize * 2 : _brushSize;
-            inkCanvas.DefaultDrawingAttributes.Height = mode == DrawingMode.ERASE ? _brushSize * 2 : _brushSize;
+            inkCanvas.DefaultDrawingAttributes.Width = mode == DrawingMode.ERASE ? (int)_brushSize * 2 : (int)_brushSize;
+            inkCanvas.DefaultDrawingAttributes.Height = mode == DrawingMode.ERASE ? (int)_brushSize * 2 : (int)_brushSize;
             inkCanvas.DefaultDrawingAttributes.Color = _brushColor;
+
+            _toolsWindow?.UpdateDrawingModeButtonStates(mode);
+        }
+
+        public void SetColor(Color color)
+        {
+            _brushColor = color;
+            inkCanvas.DefaultDrawingAttributes.Color = color;
+
+            _toolsWindow?.UpdateColorButtonStates(color);
+        }
+
+        public void SetSize(BrushSize size)
+        {
+            _brushSize = size;
+
+            inkCanvas.DefaultDrawingAttributes.Width = _mode == DrawingMode.ERASE ? (int)size * 2 : (int)size;
+            inkCanvas.DefaultDrawingAttributes.Height = _mode == DrawingMode.ERASE ? (int)size * 2 : (int)size;
+
+            _toolsWindow?.UpdateSizeButtonStates(size);
+        }
+
+        private void OnMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Reset();
+        }
+
+        private void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Reset();
+            }
         }
 
         private void OnStrokeCollected(object sender, InkCanvasStrokeCollectedEventArgs e)
@@ -107,10 +151,6 @@ namespace Nupen
             else if (_mode == DrawingMode.RECT)
             {
                 StrokeRectConvert(e.Stroke);
-            }
-            else if (_mode == DrawingMode.CIRCLE)
-            {
-                StrokeCircleConvert(e.Stroke);
             }
         }
 
@@ -176,29 +216,6 @@ namespace Nupen
             ptsRect.Add(new StylusPoint(pt2.X - mag * x1, pt2.Y - mag * y1));
             ptsRect.Add(new StylusPoint(pt2.X, pt2.Y));
             ptsRect.Add(new StylusPoint(pt2.X - mag * x2, pt2.Y - mag * y2));
-            stroke.StylusPoints = ptsRect;
-            stroke.DrawingAttributes.FitToCurve = false;
-        }
-
-        private void StrokeCircleConvert(Stroke stroke)
-        {
-            double toRadians = Math.PI / 180.0;
-            StylusPointCollection ptsRect = new StylusPointCollection();
-            StylusPointCollection pts = stroke.StylusPoints;
-
-            //rather that try to redraw the circle, consider a diagonal line as indicator of circle center and diameter
-            StylusPoint ptStart = pts[0];
-            StylusPoint ptEnd = pts[pts.Count - 1];
-            StylusPoint ptCenter = new StylusPoint((ptStart.X + ptEnd.X) / 2.0, (ptStart.Y + ptEnd.Y) / 2.0);
-
-            double deltaX = ptEnd.X - ptCenter.X;
-            double deltaY = ptEnd.Y - ptCenter.Y;
-            double radius = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-            for (double theta = 0; theta <= 360.0; theta += 10.0)
-            {
-                double angle = theta * toRadians;
-                ptsRect.Add(new StylusPoint(ptCenter.X + radius * Math.Cos(angle), ptCenter.Y + radius * Math.Sin(angle)));
-            }
             stroke.StylusPoints = ptsRect;
             stroke.DrawingAttributes.FitToCurve = false;
         }

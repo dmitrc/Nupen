@@ -6,12 +6,14 @@
         WindowStyle="None"
         WindowState="Normal"
         ShowInTaskbar="False"
-        Loaded="OnLoaded">
+        Loaded="OnLoaded"
+        KeyUp="OnKeyUp">
 
     <InkCanvas 
         Name="inkCanvas" 
         Background="{x:Null}"
         EditingMode="None"
-        StrokeCollected="OnStrokeCollected" />
+        StrokeCollected="OnStrokeCollected"
+        MouseRightButtonUp="OnMouseRightButtonUp" />
 
 </Window>
