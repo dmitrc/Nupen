@@ -10,7 +10,7 @@ using System.Windows.Media;
 namespace Nupen
 {
     public enum DrawingMode { NONE, PEN, HIGHLIGHT, ARROW, RECT, ERASE };
-    public enum BrushSize { S = 2, M = 3, L = 5, XL = 10 };
+    public enum BrushSize { S = 3, M = 5, L = 10, XL = 24 };
 
     public partial class MainWindow : Window
     {
@@ -25,7 +25,7 @@ namespace Nupen
 
         private ToolsWindow? _toolsWindow;
         private DrawingMode _mode = DrawingMode.NONE;
-        private BrushSize _brushSize = BrushSize.M;
+        private BrushSize _brushSize = BrushSize.S;
         private Color _brushColor = Color.FromRgb(255, 0, 0);
 
         [DllImport("user32.dll")]
@@ -120,8 +120,8 @@ namespace Nupen
 
             inkCanvas.EditingMode = mode == DrawingMode.ERASE ? InkCanvasEditingMode.EraseByStroke : InkCanvasEditingMode.Ink;
 
+            inkCanvas.DefaultDrawingAttributes.FitToCurve = false;
             inkCanvas.DefaultDrawingAttributes.IsHighlighter = mode == DrawingMode.HIGHLIGHT;
-            inkCanvas.DefaultDrawingAttributes.FitToCurve = true;
             inkCanvas.DefaultDrawingAttributes.Width = mode == DrawingMode.ERASE ? (int)_brushSize * 2 : (int)_brushSize;
             inkCanvas.DefaultDrawingAttributes.Height = mode == DrawingMode.ERASE ? (int)_brushSize * 2 : (int)_brushSize;
             inkCanvas.DefaultDrawingAttributes.Color = _brushColor;
