@@ -151,7 +151,6 @@ namespace Nupen
         {
             var id = GetType().GetHashCode();
 
-            RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x30);
             RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x31);
             RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x32);
             RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x33);
@@ -161,6 +160,7 @@ namespace Nupen
             RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x37);
             RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x38);
             RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x39);
+            RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0xBD);
 
             ComponentDispatcher.ThreadPreprocessMessage += OnThreadPreprocessMessage;
         }
@@ -174,10 +174,6 @@ namespace Nupen
 
             var key = (((int)msg.lParam >> 16) & 0xFFFF);
 
-            if (key == 0x30) // Ctrl+Shift+0
-            {
-                Clear();
-            }
             if (key == 0x31) // Ctrl+Shift+1
             {
                 SetDrawingMode(DrawingMode.PEN);
@@ -213,6 +209,10 @@ namespace Nupen
             else if (key == 0x39) // Ctrl+Shift+9
             {
                 SetColor(Color.FromRgb(0, 0, 255));
+            }
+            else if (key == 0xBD) // Ctrl+Shift+-
+            {
+                Clear();
             }
         }
 
