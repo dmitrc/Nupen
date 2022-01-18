@@ -149,5 +149,10 @@ namespace Nupen
                 _mainWindow?.SetDrawingMode(DrawingMode.HIGHLIGHT);
             }
         }
+
+        private void OnUndoButtonClick(object sender, RoutedEventArgs e)
+        {
+            _mainWindow?.Undo();
+        }
     }
 }
