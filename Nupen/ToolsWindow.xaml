@@ -64,14 +64,14 @@
         <Button Style="{StaticResource DefaultButtonStyle}" x:Name="rectButton" Grid.Row="4" Grid.ColumnSpan="4" Click="OnModeButtonClick">Rectangle</Button>
         <Button Style="{StaticResource DefaultButtonStyle}" x:Name="eraseButton" Grid.Row="5" Grid.ColumnSpan="4" Click="OnModeButtonClick">Erase</Button>
 
-        <Button Style="{StaticResource DefaultColorButtonStyle}" Tag="ColorButton" Background="#FFFFFF" Grid.Row="7" Grid.Column="0" Click="OnColorButtonClick" />
-        <Button Style="{StaticResource DefaultColorButtonStyle}" Tag="ColorButton" Background="#000000" Grid.Row="7" Grid.Column="1" Click="OnColorButtonClick" />
-        <Button Style="{StaticResource DefaultColorButtonStyle}" Tag="ColorButton" Background="#FF0000" Grid.Row="7" Grid.Column="2" Click="OnColorButtonClick" />
-        <Button Style="{StaticResource DefaultColorButtonStyle}" Tag="ColorButton" Background="#00FF00" Grid.Row="7" Grid.Column="3" Click="OnColorButtonClick" />
-        <Button Style="{StaticResource DefaultColorButtonStyle}" Tag="ColorButton" Background="#0000FF" Grid.Row="8" Grid.Column="0" Click="OnColorButtonClick" />
-        <Button Style="{StaticResource DefaultColorButtonStyle}" Tag="ColorButton" Background="#FFFF00" Grid.Row="8" Grid.Column="1" Click="OnColorButtonClick" />
-        <Button Style="{StaticResource DefaultColorButtonStyle}" Tag="ColorButton" Background="#00FFFF" Grid.Row="8" Grid.Column="2" Click="OnColorButtonClick" />
-        <Button Style="{StaticResource DefaultColorButtonStyle}" Tag="ColorButton" Background="#FF00FF" Grid.Row="8" Grid.Column="3" Click="OnColorButtonClick" />
+        <Button Style="{StaticResource DefaultColorButtonStyle}" x:Name="whiteButton" Background="#FFFFFF" Grid.Row="7" Grid.Column="0" Click="OnColorButtonClick" />
+        <Button Style="{StaticResource DefaultColorButtonStyle}" x:Name="blackButton" Background="#000000" Grid.Row="7" Grid.Column="1" Click="OnColorButtonClick" />
+        <Button Style="{StaticResource DefaultColorButtonStyle}" x:Name="redButton" Background="#FF0000" Grid.Row="7" Grid.Column="2" Click="OnColorButtonClick" />
+        <Button Style="{StaticResource DefaultColorButtonStyle}" x:Name="greenButton" Background="#00FF00" Grid.Row="7" Grid.Column="3" Click="OnColorButtonClick" />
+        <Button Style="{StaticResource DefaultColorButtonStyle}" x:Name="blueButton" Background="#0000FF" Grid.Row="8" Grid.Column="0" Click="OnColorButtonClick" />
+        <Button Style="{StaticResource DefaultColorButtonStyle}" x:Name="yellowButton" Background="#FFFF00" Grid.Row="8" Grid.Column="1" Click="OnColorButtonClick" />
+        <Button Style="{StaticResource DefaultColorButtonStyle}" x:Name="cyanButton" Background="#00FFFF" Grid.Row="8" Grid.Column="2" Click="OnColorButtonClick" />
+        <Button Style="{StaticResource DefaultColorButtonStyle}" x:Name="magentaButton" Background="#FF00FF" Grid.Row="8" Grid.Column="3" Click="OnColorButtonClick" />
 
         <Button Style="{StaticResource DefaultButtonStyle}" x:Name="smallButton" Grid.Row="10" Grid.Column="0" Click="OnSizeButtonClick">S</Button>
         <Button Style="{StaticResource DefaultButtonStyle}" x:Name="mediumButton" Grid.Row="10" Grid.Column="1" Click="OnSizeButtonClick">M</Button>

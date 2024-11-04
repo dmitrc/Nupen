@@ -11,6 +11,7 @@ namespace Nupen
 {
     public enum DrawingMode { NONE, PEN, HIGHLIGHT, ARROW, RECT, ERASE };
     public enum BrushSize { S = 3, M = 5, L = 10, XL = 24 };
+    public enum BrushColor { WHITE, BLACK, RED, GREEN, BLUE, YELLOW, CYAN, MAGENTA };
 
     public partial class MainWindow : Window
     {
@@ -26,7 +27,7 @@ namespace Nupen
         private ToolsWindow? _toolsWindow;
         private DrawingMode _mode = DrawingMode.NONE;
         private BrushSize _brushSize = BrushSize.S;
-        private Color _brushColor = Color.FromRgb(255, 0, 0);
+        private BrushColor _brushColor = BrushColor.RED;
 
         [DllImport("user32.dll")]
         public static extern int GetWindowLongPtr(IntPtr hwnd, int index);
@@ -124,15 +125,15 @@ namespace Nupen
             inkCanvas.DefaultDrawingAttributes.IsHighlighter = mode == DrawingMode.HIGHLIGHT;
             inkCanvas.DefaultDrawingAttributes.Width = mode == DrawingMode.ERASE ? (int)_brushSize * 2 : (int)_brushSize;
             inkCanvas.DefaultDrawingAttributes.Height = mode == DrawingMode.ERASE ? (int)_brushSize * 2 : (int)_brushSize;
-            inkCanvas.DefaultDrawingAttributes.Color = _brushColor;
+            inkCanvas.DefaultDrawingAttributes.Color = GetBrushColor(_brushColor);
 
             _toolsWindow?.UpdateDrawingModeButtonStates(mode);
         }
 
-        public void SetColor(Color color)
+        public void SetColor(BrushColor color)
         {
             _brushColor = color;
-            inkCanvas.DefaultDrawingAttributes.Color = color;
+            inkCanvas.DefaultDrawingAttributes.Color = GetBrushColor(_brushColor);
 
             _toolsWindow?.UpdateColorButtonStates(color);
         }
@@ -147,20 +148,57 @@ namespace Nupen
             _toolsWindow?.UpdateSizeButtonStates(size);
         }
 
+        private Color GetBrushColor(BrushColor color)
+        {
+            if (color == BrushColor.WHITE)
+            {
+                return Color.FromRgb(255, 255, 255);
+            }
+            else if (color == BrushColor.BLACK)
+            {
+                return Color.FromRgb(0, 0, 0);
+            }
+            else if (color == BrushColor.RED)
+            {
+                return Color.FromRgb(255, 0, 0);
+            }
+            else if (color == BrushColor.GREEN)
+            {
+                return Color.FromRgb(0, 255, 0);
+            }
+            else if (color == BrushColor.BLUE)
+            {
+                return Color.FromRgb(0, 0, 255);
+            }
+            else if (color == BrushColor.YELLOW)
+            {
+                return Color.FromRgb(255, 255, 0);
+            }
+            else if (color == BrushColor.CYAN)
+            {
+                return Color.FromRgb(0, 255, 255);
+            }
+            else if (color == BrushColor.MAGENTA)
+            {
+                return Color.FromRgb(255, 0, 255);
+            }
+            return Color.FromRgb(0, 0, 0);
+        }
+
         private void SetupHotkeys()
         {
             var id = GetType().GetHashCode();
 
-            RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x31);
-            RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x32);
-            RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x33);
-            RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x34);
-            RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x35);
-            RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x36);
-            RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x37);
-            RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x38);
-            RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0x39);
-            RegisterHotKey(_hwnd, id, MOD_CONTROL | MOD_SHIFT, 0xBD);
+            RegisterHotKey(_hwnd, id, 0, 0x60);
+            RegisterHotKey(_hwnd, id, 0, 0x61);
+            RegisterHotKey(_hwnd, id, 0, 0x62);
+            RegisterHotKey(_hwnd, id, 0, 0x63);
+            RegisterHotKey(_hwnd, id, 0, 0x64);
+            RegisterHotKey(_hwnd, id, 0, 0x65);
+            RegisterHotKey(_hwnd, id, 0, 0x66);
+            RegisterHotKey(_hwnd, id, 0, 0x67);
+            RegisterHotKey(_hwnd, id, 0, 0x68);
+            RegisterHotKey(_hwnd, id, 0, 0x69);
 
             ComponentDispatcher.ThreadPreprocessMessage += OnThreadPreprocessMessage;
         }
@@ -174,45 +212,126 @@ namespace Nupen
 
             var key = (((int)msg.lParam >> 16) & 0xFFFF);
 
-            if (key == 0x31) // Ctrl+Shift+1
-            {
-                SetDrawingMode(DrawingMode.PEN);
-            }
-            else if (key == 0x32) // Ctrl+Shift+2
-            {
-                SetDrawingMode(DrawingMode.HIGHLIGHT);
-            }
-            else if (key == 0x33) // Ctrl+Shift+3
-            {
-                SetDrawingMode(DrawingMode.ARROW);
-            }
-            else if (key == 0x34) // Ctrl+Shift+4
-            {
-                SetDrawingMode(DrawingMode.RECT);
-            }
-            else if (key == 0x35) // Ctrl+Shift+5
-            {
-                SetDrawingMode(DrawingMode.ERASE);
-            }
-            else if (key == 0x36) // Ctrl+Shift+6
-            {
-                Undo();   
-            }
-            else if (key == 0x37) // Ctrl+Shift+7
-            {
-                SetColor(Color.FromRgb(255, 0, 0));
-            }
-            else if (key == 0x38) // Ctrl+Shift+8
-            {
-                SetColor(Color.FromRgb(0, 255, 0));
-            }
-            else if (key == 0x39) // Ctrl+Shift+9
-            {
-                SetColor(Color.FromRgb(0, 0, 255));
-            }
-            else if (key == 0xBD) // Ctrl+Shift+-
+            if (key == 0x60) // Num0
             {
                 Clear();
+            }
+            else if (key == 0x61) // Num1
+            {
+                Undo();
+            }
+            else if (key == 0x62) // Num2
+            {
+                SetDrawingMode(DrawingMode.NONE);
+            }
+            else if (key == 0x63) // Num3
+            {
+                if (_mode != DrawingMode.PEN)
+                {
+                    SetDrawingMode(DrawingMode.PEN);
+                }
+                else
+                {
+                    SetDrawingMode(DrawingMode.NONE);
+                }
+            }
+            else if (key == 0x64) // Num4
+            {
+                if (_mode != DrawingMode.HIGHLIGHT)
+                {
+                    SetDrawingMode(DrawingMode.HIGHLIGHT);
+                }
+                else
+                {
+                    SetDrawingMode(DrawingMode.NONE);
+                }
+            }
+            else if (key == 0x65) // Num5
+            {
+                if (_mode != DrawingMode.ARROW)
+                {
+                    SetDrawingMode(DrawingMode.ARROW);
+                }
+                else
+                {
+                    SetDrawingMode(DrawingMode.NONE);
+                }
+            }
+            else if (key == 0x66) // Num6
+            {
+                if (_mode != DrawingMode.RECT)
+                {
+                    SetDrawingMode(DrawingMode.RECT);
+                }
+                else
+                {
+                    SetDrawingMode(DrawingMode.NONE);
+                }
+            }
+            else if (key == 0x67) // Num7
+            {
+                if (_mode != DrawingMode.ERASE)
+                {
+                    SetDrawingMode(DrawingMode.ERASE);
+                }
+                else
+                {
+                    SetDrawingMode(DrawingMode.NONE);
+                }
+            }
+            else if (key == 0x68) // Num8
+            {
+                if (_brushColor == BrushColor.WHITE)
+                {
+                    SetColor(BrushColor.BLACK);
+                }
+                else if (_brushColor == BrushColor.BLACK)
+                {
+                    SetColor(BrushColor.RED);
+                }
+                else if (_brushColor == BrushColor.RED)
+                {
+                    SetColor(BrushColor.GREEN);
+                }
+                else if (_brushColor == BrushColor.GREEN)
+                {
+                    SetColor(BrushColor.BLUE);
+                }
+                else if (_brushColor == BrushColor.BLUE)
+                {
+                    SetColor(BrushColor.YELLOW);
+                }
+                else if (_brushColor == BrushColor.YELLOW)
+                {
+                    SetColor(BrushColor.CYAN);
+                }
+                else if (_brushColor == BrushColor.CYAN)
+                {
+                    SetColor(BrushColor.MAGENTA);
+                }
+                else if (_brushColor == BrushColor.MAGENTA)
+                {
+                    SetColor(BrushColor.WHITE);
+                }
+            }
+            else if (key == 0x69) // Num9
+            {
+                if (_brushSize == BrushSize.S)
+                {
+                    SetSize(BrushSize.M);
+                }
+                else if (_brushSize == BrushSize.M)
+                {
+                    SetSize(BrushSize.L);
+                }
+                else if (_brushSize == BrushSize.L)
+                {
+                    SetSize(BrushSize.XL);
+                }
+                else if (_brushSize == BrushSize.XL)
+                {
+                    SetSize(BrushSize.S);
+                }
             }
         }
 
@@ -284,11 +403,12 @@ namespace Nupen
             StylusPointCollection ptsRect = new StylusPointCollection();
             StylusPointCollection pts = stroke.StylusPoints;
 
-            StylusPoint pt1 = pts[pts.Count - 1];
-            StylusPoint pt2 = pts[0];
+            StylusPoint pt1 = pts[0];
+            StylusPoint pt2 = pts[pts.Count - 1];
 
             ptsRect.Add(pt1);
             ptsRect.Add(pt2);
+
             //compute arrow head
             double arrowAngle = 30.0 * toRadians;
             double deltaX = pt2.X - pt1.X;

@@ -37,21 +37,16 @@ namespace Nupen
             eraseButton.Style = mode == DrawingMode.ERASE ? _activeButtonStyle : _defaultButtonStyle;
         }
 
-        public void UpdateColorButtonStates(Color color)
+        public void UpdateColorButtonStates(BrushColor color)
         {
-            var colorButtons = grid.Children.OfType<Button>().Where(x => (string)x.Tag == "ColorButton").ToList();
-            foreach (var button in colorButtons)
-            {
-                if (button.Background is SolidColorBrush brush
-                    && brush.Color.ToString() == color.ToString())
-                {
-                    button.Style = _activeColorButtonStyle;
-                }
-                else
-                {
-                    button.Style = _defaultColorButtonStyle;
-                }
-            }
+            whiteButton.Style = color == BrushColor.WHITE ? _activeColorButtonStyle : _defaultColorButtonStyle;
+            blackButton.Style = color == BrushColor.BLACK ? _activeColorButtonStyle : _defaultColorButtonStyle;
+            redButton.Style = color == BrushColor.RED ? _activeColorButtonStyle : _defaultColorButtonStyle;
+            greenButton.Style = color == BrushColor.GREEN ? _activeColorButtonStyle : _defaultColorButtonStyle;
+            blueButton.Style = color == BrushColor.BLUE ? _activeColorButtonStyle : _defaultColorButtonStyle;
+            yellowButton.Style = color == BrushColor.YELLOW ? _activeColorButtonStyle : _defaultColorButtonStyle;
+            cyanButton.Style = color == BrushColor.CYAN ? _activeColorButtonStyle : _defaultColorButtonStyle;
+            magentaButton.Style = color == BrushColor.MAGENTA ? _activeColorButtonStyle : _defaultColorButtonStyle;
         }
 
         public void UpdateSizeButtonStates(BrushSize size)
@@ -95,10 +90,37 @@ namespace Nupen
 
         private void OnColorButtonClick(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button
-                && button.Background is SolidColorBrush brush)
+            if (sender == whiteButton) 
             {
-                _mainWindow?.SetColor(brush.Color);
+                _mainWindow?.SetColor(BrushColor.WHITE);
+            }
+            if (sender == blackButton) 
+            {
+                _mainWindow?.SetColor(BrushColor.BLACK);
+            }
+            if (sender == redButton) 
+            {
+                _mainWindow?.SetColor(BrushColor.RED);
+            }
+            if (sender == greenButton) 
+            {
+                _mainWindow?.SetColor(BrushColor.GREEN);
+            }
+            if (sender == blueButton) 
+            {
+                _mainWindow?.SetColor(BrushColor.BLUE);
+            }
+            if (sender == yellowButton) 
+            {
+                _mainWindow?.SetColor(BrushColor.YELLOW);
+            }
+            if (sender == cyanButton) 
+            {
+                _mainWindow?.SetColor(BrushColor.CYAN);
+            }
+            if (sender == magentaButton) 
+            {
+                _mainWindow?.SetColor(BrushColor.MAGENTA);
             }
         }
 
